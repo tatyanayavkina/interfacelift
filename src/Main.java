@@ -80,7 +80,7 @@ public class Main {
             String imgUrl = (String) attributes.getAttribute(HTML.Attribute.HREF);
 
             if (imgUrl != null && imgUrl.endsWith(imgMatch)) {
-                downloadImage(imgUrl);
+                ImageLoader.downloadImage(webUrl,imgUrl);
             }
         }
 
@@ -128,37 +128,5 @@ public class Main {
         }
 
         return loadPageUrls;
-    }
-
-    //download image
-    private static void downloadImage(String imgUrl){
-        BufferedImage image = null;
-        String url;
-
-        try {
-
-            if (!(imgUrl.startsWith("http"))) {
-                url = webUrl + imgUrl;
-            } else {
-                url = imgUrl;
-            }
-
-            System.out.println(url);
-
-            imgUrl = imgUrl.substring(imgUrl.lastIndexOf("/") + 1);
-            String imageFormat = imgUrl.substring(imgUrl.lastIndexOf(".") + 1);
-            String imgPath = "D:/books/" + imgUrl + "";
-            URL imageUrl = new URL(url);
-            image = ImageIO.read(imageUrl);
-
-            if (image != null) {
-
-                File file = new File(imgPath);
-                ImageIO.write(image, imageFormat, file);
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 }
