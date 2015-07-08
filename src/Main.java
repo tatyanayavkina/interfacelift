@@ -14,6 +14,10 @@ import java.net.URLConnection;
 //import javax.net.ssl.HttpsURLConnection;
 
 public class Main {
+    private static String webUrl = "http://www.hdwallpapers.in/";
+    private static String webPageMatch = ".html";
+    private static String imgMatch = "";
+
 
     public static void main(String[] args) {
 //        // Create a new trust manager that trust all certificates
@@ -40,37 +44,13 @@ public class Main {
 //            e.printStackTrace();
 //        }
 
-
-
-        String webUrl = "http://www.hdwallpapers.in/";
-//        String webUrl = "http://www.goodfon.ru/";
-//        String match = "1920_1080.jpg";
-        System.out.println("before try");
-
-        try{
-            //create url and open connection
-            URL url = new URL(webUrl);
-            URLConnection connection =  url.openConnection();
-
-            //create bufferedReader and read inputStream
-            InputStream is = connection.getInputStream();
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader br = new BufferedReader(isr);
-
-
-            //
-            HTMLEditorKit htmlKit = new HTMLEditorKit();
-            HTMLDocument htmlDoc = (HTMLDocument) htmlKit.createDefaultDocument();
-            HTMLEditorKit.Parser parser = new ParserDelegator();
-            HTMLEditorKit.ParserCallback callback = htmlDoc.getReader(0);
-            parser.parse(br, callback, true);
+            HTMLDocument htmlDoc = getHtmlDoc(webUrl);
             //iterate html document
             for (HTMLDocument.Iterator iterator = htmlDoc.getIterator(HTML.Tag.IMG); iterator.isValid(); iterator.next()) {
                 AttributeSet attributes = iterator.getAttributes();
                 String imgSrc = (String) attributes.getAttribute(HTML.Attribute.SRC);
-                System.out.println("src=" + imgSrc);
                 if (imgSrc != null && (imgSrc.endsWith(".jpg") || (imgSrc.endsWith(".png")) || (imgSrc.endsWith(".jpeg")) || (imgSrc.endsWith(".bmp")) || (imgSrc.endsWith(".ico")))) {
-                     downloadImage(webUrl, imgSrc);
+                     downloadImage(imgSrc);
                 }
             }
 //            for(HTMLDocument.Iterator iterator = htmlDoc.getIterator(HTML.Tag.A); iterator.isValid(); iterator.next()) {
@@ -82,11 +62,6 @@ public class Main {
 //                }
 //            }
 
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-
     }
 
     private static void goToDownloadPage(String webUrl, String pageUrl){
@@ -97,13 +72,43 @@ public class Main {
             url = pageUrl;
         }
 
+
+
     }
 
-    private static void downloadImage(String url, String imgUrl){
+    private static HTMLDocument getHtmlDoc(String pageUrl){
+        // prepare need objects
+        HTMLEditorKit htmlKit = new HTMLEditorKit();
+        HTMLDocument htmlDoc = (HTMLDocument) htmlKit.createDefaultDocument();
+        HTMLEditorKit.Parser parser = new ParserDelegator();
+        HTMLEditorKit.ParserCallback callback = htmlDoc.getReader(0);
+
+        try{
+            //create url and open connection
+            URL url = new URL(pageUrl);
+            URLConnection connection =  url.openConnection();
+
+            //create bufferedReader and read inputStream
+            InputStream is = connection.getInputStream();
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader br = new BufferedReader(isr);
+            //parse web page content
+            parser.parse(br, callback, true);
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+
+        return htmlDoc;
+    }
+
+    private static void downloadImage(String imgUrl){
         BufferedImage image = null;
+        String url;
+
         try {
             if (!(imgUrl.startsWith("http"))) {
-                url = url + imgUrl;
+                url = webUrl + imgUrl;
             } else {
                 url = imgUrl;
             }
