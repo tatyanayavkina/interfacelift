@@ -1,14 +1,8 @@
-import javax.imageio.ImageIO;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.parser.ParserDelegator;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
+
 //import javax.net.ssl.TrustManager;
 //import javax.net.ssl.X509TrustManager;
 //import javax.net.ssl.SSLContext;
@@ -45,22 +39,13 @@ public class Main {
 //            e.printStackTrace();
 //        }
 
-        HTMLDocument htmlDoc = getHtmlDoc(webUrl);
+        HTMLDocument htmlDoc = HtmlParser.getHtmlDoc(webUrl);
         ArrayList<String> loadPageUrls = getLoadPageUrlList(htmlDoc);
 
         for (int i = 0; i < loadPageUrls.size(); i ++){
             String pageUrl = loadPageUrls.get(i);
             goToDownloadPage(pageUrl);
         }
-
-//            for (HTMLDocument.Iterator iterator = htmlDoc.getIterator(HTML.Tag.IMG); iterator.isValid(); iterator.next()) {
-//                AttributeSet attributes = iterator.getAttributes();
-//                String imgSrc = (String) attributes.getAttribute(HTML.Attribute.SRC);
-//                if (imgSrc != null && (imgSrc.endsWith(".jpg") || (imgSrc.endsWith(".png")) || (imgSrc.endsWith(".jpeg")) || (imgSrc.endsWith(".bmp")) || (imgSrc.endsWith(".ico")))) {
-//                     downloadImage(imgSrc);
-//                }
-//            }
-
     }
 
     private static void goToDownloadPage(String pageUrl){
@@ -72,7 +57,7 @@ public class Main {
             url = pageUrl;
         }
 
-        HTMLDocument htmlDoc = getHtmlDoc(url);
+        HTMLDocument htmlDoc = HtmlParser.getHtmlDoc(url);
 
         for (HTMLDocument.Iterator iterator = htmlDoc.getIterator(HTML.Tag.A); iterator.isValid(); iterator.next()) {
 
@@ -84,33 +69,6 @@ public class Main {
             }
         }
 
-    }
-
-    //get content of web page with pageUrl url
-    private static HTMLDocument getHtmlDoc(String pageUrl){
-        // prepare need objects
-        HTMLEditorKit htmlKit = new HTMLEditorKit();
-        HTMLDocument htmlDoc = (HTMLDocument) htmlKit.createDefaultDocument();
-        HTMLEditorKit.Parser parser = new ParserDelegator();
-        HTMLEditorKit.ParserCallback callback = htmlDoc.getReader(0);
-
-        try{
-            //create url and open connection
-            URL url = new URL(pageUrl);
-            URLConnection connection =  url.openConnection();
-
-            //create bufferedReader and read inputStream
-            InputStream is = connection.getInputStream();
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader br = new BufferedReader(isr);
-            //parse web page content
-            parser.parse(br, callback, true);
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-
-        return htmlDoc;
     }
 
     //make list of pages which have href to image download
