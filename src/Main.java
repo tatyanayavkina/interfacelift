@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 //import javax.net.ssl.TrustManager;
 //import javax.net.ssl.X509TrustManager;
 //import javax.net.ssl.SSLContext;
@@ -16,7 +17,7 @@ import java.net.URLConnection;
 public class Main {
     private static String webUrl = "http://www.hdwallpapers.in/";
     private static String webPageMatch = ".html";
-    private static String imgMatch = "";
+    private static String imgMatch = "1920x1080.jpg";
 
 
     public static void main(String[] args) {
@@ -44,38 +45,48 @@ public class Main {
 //            e.printStackTrace();
 //        }
 
-            HTMLDocument htmlDoc = getHtmlDoc(webUrl);
-            //iterate html document
-            for (HTMLDocument.Iterator iterator = htmlDoc.getIterator(HTML.Tag.IMG); iterator.isValid(); iterator.next()) {
-                AttributeSet attributes = iterator.getAttributes();
-                String imgSrc = (String) attributes.getAttribute(HTML.Attribute.SRC);
-                if (imgSrc != null && (imgSrc.endsWith(".jpg") || (imgSrc.endsWith(".png")) || (imgSrc.endsWith(".jpeg")) || (imgSrc.endsWith(".bmp")) || (imgSrc.endsWith(".ico")))) {
-                     downloadImage(imgSrc);
-                }
-            }
-//            for(HTMLDocument.Iterator iterator = htmlDoc.getIterator(HTML.Tag.A); iterator.isValid(); iterator.next()) {
+        HTMLDocument htmlDoc = getHtmlDoc(webUrl);
+        ArrayList<String> loadPageUrls = getLoadPageUrlList(htmlDoc);
+
+        for (int i = 0; i < loadPageUrls.size(); i ++){
+            String pageUrl = loadPageUrls.get(i);
+            goToDownloadPage(pageUrl);
+        }
+
+//            for (HTMLDocument.Iterator iterator = htmlDoc.getIterator(HTML.Tag.IMG); iterator.isValid(); iterator.next()) {
 //                AttributeSet attributes = iterator.getAttributes();
-//                String href = (String) attributes.getAttribute(HTML.Attribute.HREF);
-//
-//                if(href.contains(match)){
-//                    downloadImage(webUrl, href);
+//                String imgSrc = (String) attributes.getAttribute(HTML.Attribute.SRC);
+//                if (imgSrc != null && (imgSrc.endsWith(".jpg") || (imgSrc.endsWith(".png")) || (imgSrc.endsWith(".jpeg")) || (imgSrc.endsWith(".bmp")) || (imgSrc.endsWith(".ico")))) {
+//                     downloadImage(imgSrc);
 //                }
 //            }
 
     }
 
-    private static void goToDownloadPage(String webUrl, String pageUrl){
+    private static void goToDownloadPage(String pageUrl){
         String url;
+
         if(!pageUrl.startsWith("http")){
             url = webUrl + pageUrl;
         } else{
             url = pageUrl;
         }
 
+        HTMLDocument htmlDoc = getHtmlDoc(url);
 
+        for (HTMLDocument.Iterator iterator = htmlDoc.getIterator(HTML.Tag.A); iterator.isValid(); iterator.next()) {
+
+            AttributeSet attributes = iterator.getAttributes();
+            String imgUrl = (String) attributes.getAttribute(HTML.Attribute.HREF);
+
+            if (imgUrl != null && imgUrl.endsWith(imgMatch)) {
+                downloadImage(imgUrl);
+            }
+        }
 
     }
 
+    //get content of web page with pageUrl url
     private static HTMLDocument getHtmlDoc(String pageUrl){
         // prepare need objects
         HTMLEditorKit htmlKit = new HTMLEditorKit();
@@ -102,27 +113,50 @@ public class Main {
         return htmlDoc;
     }
 
+    //make list of pages which have href to image download
+    private static ArrayList<String> getLoadPageUrlList(HTMLDocument htmlDoc){
+        ArrayList<String> loadPageUrls = new ArrayList<>();
+
+        for (HTMLDocument.Iterator iterator = htmlDoc.getIterator(HTML.Tag.A); iterator.isValid(); iterator.next()) {
+
+            AttributeSet attributes = iterator.getAttributes();
+            String imgLoadPageUrl = (String) attributes.getAttribute(HTML.Attribute.HREF);
+
+            if (imgLoadPageUrl != null && imgLoadPageUrl.endsWith(webPageMatch)) {
+                loadPageUrls.add(imgLoadPageUrl);
+            }
+        }
+
+        return loadPageUrls;
+    }
+
+    //download image
     private static void downloadImage(String imgUrl){
         BufferedImage image = null;
         String url;
 
         try {
+
             if (!(imgUrl.startsWith("http"))) {
                 url = webUrl + imgUrl;
             } else {
                 url = imgUrl;
             }
+
+            System.out.println(url);
+
             imgUrl = imgUrl.substring(imgUrl.lastIndexOf("/") + 1);
-            String imageFormat = null;
-            imageFormat = imgUrl.substring(imgUrl.lastIndexOf(".") + 1);
-            String imgPath = null;
-            imgPath = "D:/books/" + imgUrl + "";
+            String imageFormat = imgUrl.substring(imgUrl.lastIndexOf(".") + 1);
+            String imgPath = "D:/books/" + imgUrl + "";
             URL imageUrl = new URL(url);
             image = ImageIO.read(imageUrl);
+
             if (image != null) {
+
                 File file = new File(imgPath);
                 ImageIO.write(image, imageFormat, file);
             }
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
