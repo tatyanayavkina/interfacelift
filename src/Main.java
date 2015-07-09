@@ -3,6 +3,10 @@
 //import javax.net.ssl.SSLContext;
 //import javax.net.ssl.HttpsURLConnection;
 
+import java.time.LocalTime;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
 public class Main {
 
 
@@ -31,9 +35,17 @@ public class Main {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
+        final int QUEUE_SIZE = 20;
+        final int THREAD_COUNT = 3;
+
+        BlockingQueue<String> queue = new ArrayBlockingQueue<>(QUEUE_SIZE);
+
         String imgMatch = "1920x1080.jpg";
-        Wallpapers wPapers = new Wallpapers(imgMatch);
+        Wallpapers wPapers = new Wallpapers(imgMatch, queue, THREAD_COUNT);
+
+        System.out.println("start=" + LocalTime.now());
         wPapers.makeDownloads();
+        System.out.println("end=" + LocalTime.now());
     }
 
 
