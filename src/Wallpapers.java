@@ -1,5 +1,9 @@
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 
 /**
  * Created by Татьяна on 08.07.2015.
@@ -10,7 +14,7 @@ public class Wallpapers {
     private BlockingQueue<String> pagesQueue = new LinkedBlockingQueue<>();
 
     public Wallpapers(int aThreadCount){
-        webUrl = "http://www.hdwallpapers.in/";
+        webUrl = "http://www.hdwallpapers.in";
         threadCount = aThreadCount;
 
         for(int i = 1; i < 4; i++){
@@ -20,14 +24,31 @@ public class Wallpapers {
 
     public void makeDownloads (){
         BlockingQueue<String> imageLoadPageQueue = new LinkedBlockingQueue<>();
+        ExecutorService es = Executors.newCachedThreadPool();
 
-        for(int i = 0; i < threadCount; i++){
-            new Thread(new ImageLoadPageSearchTask(pagesQueue, imageLoadPageQueue, webUrl)).start();
-        }
+        try{
+            for(int i=0;i<5;i++)
+                es.execute(new ImageLoadPageSearchTask(pagesQueue, imageLoadPageQueue, webUrl));
+            es.shutdown();
+            boolean finished = es.awaitTermination(1, TimeUnit.MINUTES);
 
-        for(int i = 0; i < threadCount; i++){
-            new Thread(new ImageLoaderTask(imageLoadPageQueue, webUrl)).start();
+            if (finished){
+                for(int i = 0; i < threadCount; i++){
+                    new Thread(new ImageLoaderTask(imageLoadPageQueue, webUrl)).start();
+                }
+            }
         }
+        catch(InterruptedException ex){}
+
+
+//        for(int i = 0; i < threadCount; i++){
+//            new Thread(new ImageLoadPageSearchTask(pagesQueue, imageLoadPageQueue, webUrl)).start();
+//        }
+//
+//        for(int i = 0; i < threadCount; i++){
+//            new Thread(new ImageLoaderTask(imageLoadPageQueue, webUrl)).start();
+//        }
+//
     }
 
 }
