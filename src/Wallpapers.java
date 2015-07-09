@@ -12,8 +12,8 @@ public class Wallpapers {
     public Wallpapers(int aThreadCount){
         webUrl = "http://www.hdwallpapers.in/";
         threadCount = aThreadCount;
-        
-        for(int i = 1; i < 11; i++){
+
+        for(int i = 1; i < 4; i++){
             pagesQueue.add(webUrl + "/latest_wallpapers/page/" + i);
         }
     }

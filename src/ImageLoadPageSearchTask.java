@@ -1,6 +1,7 @@
 import javax.swing.text.AttributeSet;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
+import java.time.LocalTime;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -53,7 +54,6 @@ public class ImageLoadPageSearchTask implements Runnable{
                 } else{
                     url = imgLoadPageUrl;
                 }
-
                 imageLoadPageQueue.add(url);
             }
         }

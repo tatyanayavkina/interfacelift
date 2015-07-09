@@ -1,6 +1,7 @@
 import javax.swing.text.AttributeSet;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
+import java.time.LocalTime;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -20,7 +21,6 @@ public class ImageLoaderTask  implements Runnable{
     public void run(){
         try{
             boolean done = false;
-
             while(!done){
 
                 if (queue.isEmpty()){
@@ -28,6 +28,7 @@ public class ImageLoaderTask  implements Runnable{
                 }
                 else{
                     String imgPageUrl = queue.take();
+                    System.out.println(LocalTime.now() + " IMGpage = " + imgPageUrl);
                     String imgUrl = findImageLoadUrl(imgPageUrl);
                     ImageLoader.downloadImage(imgUrl);
                 }
