@@ -36,7 +36,7 @@ public class Main {
 //            e.printStackTrace();
 //        }
         final int QUEUE_SIZE = 20;
-        final int THREAD_COUNT = 3;
+        final int THREAD_COUNT = 10;
 
         BlockingQueue<String> queue = new ArrayBlockingQueue<>(QUEUE_SIZE);
 
