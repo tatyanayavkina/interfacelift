@@ -4,8 +4,8 @@
 //import javax.net.ssl.HttpsURLConnection;
 
 import java.time.LocalTime;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Main {
 
@@ -35,13 +35,11 @@ public class Main {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-        final int QUEUE_SIZE = 20;
+
         final int THREAD_COUNT = 10;
 
-        BlockingQueue<String> queue = new ArrayBlockingQueue<>(QUEUE_SIZE);
-
-        String imgMatch = "1920x1080.jpg";
-        Wallpapers wPapers = new Wallpapers(imgMatch, queue, THREAD_COUNT);
+        BlockingQueue<String> queue = new LinkedBlockingQueue<>();
+        Wallpapers wPapers = new Wallpapers(queue, THREAD_COUNT);
 
         System.out.println("start=" + LocalTime.now());
         wPapers.makeDownloads();
