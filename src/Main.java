@@ -4,8 +4,6 @@
 //import javax.net.ssl.HttpsURLConnection;
 
 import java.time.LocalTime;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class Main {
 
@@ -38,8 +36,7 @@ public class Main {
 
         final int THREAD_COUNT = 10;
 
-        BlockingQueue<String> queue = new LinkedBlockingQueue<>();
-        Wallpapers wPapers = new Wallpapers(queue, THREAD_COUNT);
+        Wallpapers wPapers = new Wallpapers(THREAD_COUNT);
 
         System.out.println("start=" + LocalTime.now());
         wPapers.makeDownloads();

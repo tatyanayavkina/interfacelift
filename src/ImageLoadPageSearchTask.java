@@ -12,9 +12,9 @@ public class ImageLoadPageSearchTask implements Runnable{
     private String webUrl;
     final String pageMatch = ".html";
 
-    public ImageLoadPageSearchTask(BlockingQueue<String> aPageQueue, BlockingQueue<String> aImageLoadPageQueueString,String aWebUrl){
+    public ImageLoadPageSearchTask(BlockingQueue<String> aPageQueue, BlockingQueue<String> aImageLoadPageQueue,String aWebUrl){
         pageQueue = aPageQueue;
-        imageLoadPageQueue = aImageLoadPageQueueString;
+        imageLoadPageQueue = aImageLoadPageQueue;
         webUrl = aWebUrl;
     }
 

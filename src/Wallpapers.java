@@ -1,28 +1,33 @@
-import javax.swing.text.AttributeSet;
-import javax.swing.text.html.HTML;
-import javax.swing.text.html.HTMLDocument;
-import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Татьяна on 08.07.2015.
  */
 public class Wallpapers {
     private String webUrl;
-    private BlockingQueue<String> queue;
     private int threadCount;
+    private BlockingQueue<String> pagesQueue = new LinkedBlockingQueue<>();
 
-    public Wallpapers(BlockingQueue<String> aQueue, int aThreadCount){
+    public Wallpapers(int aThreadCount){
         webUrl = "http://www.hdwallpapers.in/";
-        queue = aQueue;
         threadCount = aThreadCount;
+        
+        for(int i = 1; i < 11; i++){
+            pagesQueue.add(webUrl + "/latest_wallpapers/page/" + i);
+        }
     }
 
     public void makeDownloads (){
-
+        BlockingQueue<String> imageLoadPageQueue = new LinkedBlockingQueue<>();
 
         for(int i = 0; i < threadCount; i++){
-            new Thread(new ImageLoaderTask(queue, webUrl)).start();
+            new Thread(new ImageLoadPageSearchTask(pagesQueue, imageLoadPageQueue, webUrl)).start();
+        }
+
+        for(int i = 0; i < threadCount; i++){
+            new Thread(new ImageLoaderTask(imageLoadPageQueue, webUrl)).start();
         }
     }
+
 }
