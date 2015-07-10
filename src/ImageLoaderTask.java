@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * Created by Татьяна on 09.07.2015.
+ * Created by Tatiana on 09.07.2015.
  */
 public class ImageLoaderTask  implements Runnable{
 
@@ -28,8 +28,8 @@ public class ImageLoaderTask  implements Runnable{
                 }
                 else{
                     String imgPageUrl = queue.take();
-                    System.out.println(LocalTime.now() + " IMGpage = " + imgPageUrl);
                     String imgUrl = findImageLoadUrl(imgPageUrl);
+//                    System.out.println(LocalTime.now() + " IMGpage = " + imgPageUrl + " img=" + imgUrl);
                     ImageLoader.downloadImage(imgUrl);
                 }
             }

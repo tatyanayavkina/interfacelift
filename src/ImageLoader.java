@@ -12,20 +12,22 @@ public class ImageLoader {
 
     //download image
     public static void downloadImage(String imgUrl){
+        if (imgUrl.length() == 0){ return;}
+
         BufferedImage image = null;
         String url = imgUrl;
-
-        System.out.println(LocalTime.now() + " " + imgUrl);
+        String imgName;
+        System.out.println(LocalTime.now() +" image from="+imgUrl);
 
         try {
-            imgUrl = imgUrl.substring(imgUrl.lastIndexOf("/") + 1);
+            imgName = imgUrl.substring(imgUrl.lastIndexOf("/") + 1);
             String imageFormat = imgUrl.substring(imgUrl.lastIndexOf(".") + 1);
 
             URL imageUrl = new URL(url);
             image = ImageIO.read(imageUrl);
 
             if (image != null) {
-                String imgPath = imgFolder + imgUrl + "";
+                String imgPath = imgFolder + imgName + "";
                 File file = new File(imgPath);
                 ImageIO.write(image, imageFormat, file);
             }

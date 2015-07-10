@@ -11,7 +11,7 @@ public class ImageLoadPageSearchTask implements Runnable{
     private BlockingQueue<String> pageQueue;
     private BlockingQueue<String> imageLoadPageQueue;
     private String webUrl;
-    final String pageMatch = ".html";
+    final String pageMatch = "-wallpapers.html";
 
     public ImageLoadPageSearchTask(BlockingQueue<String> aPageQueue, BlockingQueue<String> aImageLoadPageQueue,String aWebUrl){
         pageQueue = aPageQueue;
