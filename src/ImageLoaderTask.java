@@ -2,6 +2,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
 import java.time.LocalTime;
+import java.util.LinkedList;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -9,34 +10,27 @@ import java.util.concurrent.BlockingQueue;
  */
 public class ImageLoaderTask  implements Runnable{
 
-    private BlockingQueue<String> queue;
+    private final LinkedList<Runnable> queue;
     private String webUrl;
+    private String pageUrl;
+
     final String imgMatch = "1920x1080.jpg";
 
-    public ImageLoaderTask(BlockingQueue<String> aQueue, String aWebUrl){
+    public ImageLoaderTask(String aWebUrl, String aPageUrl, LinkedList<Runnable> aQueue){
         queue = aQueue;
         webUrl = aWebUrl;
+        pageUrl = aPageUrl;
     }
 
     public void run(){
-        try{
-            boolean done = false;
-            while(!done){
-
-                if (queue.isEmpty()){
-                    done = true;
-                }
-                else{
-                    String imgPageUrl = queue.take();
-                    String imgUrl = findImageLoadUrl(imgPageUrl);
+//        try{
+            String imgUrl = findImageLoadUrl(pageUrl);
 //                    System.out.println(LocalTime.now() + " IMGpage = " + imgPageUrl + " img=" + imgUrl);
-                    ImageLoader.downloadImage(imgUrl);
-                }
-            }
+            ImageLoader.downloadImage(imgUrl);
 
-        }
-        catch(InterruptedException ex){
-        }
+//        }
+//        catch(InterruptedException ex){
+//        }
     }
 
     private String findImageLoadUrl(String imgPageUrl){

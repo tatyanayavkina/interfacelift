@@ -1,43 +1,30 @@
 import javax.swing.text.AttributeSet;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
-import java.time.LocalTime;
-import java.util.concurrent.BlockingQueue;
+import java.util.LinkedList;
 
 /**
- * Created by Татьяна on 09.07.2015.
+ * Created by пїЅпїЅпїЅпїЅпїЅпїЅпїЅ on 09.07.2015.
  */
 public class ImageLoadPageSearchTask implements Runnable{
-    private BlockingQueue<String> pageQueue;
-    private BlockingQueue<String> imageLoadPageQueue;
-    private String webUrl;
-    final String pageMatch = "-wallpapers.html";
+    private final LinkedList<Runnable> queue;
+    private final String webUrl;
+    private final String pageUrl;
+    private final String pageMatch = "-wallpapers.html";
 
-    public ImageLoadPageSearchTask(BlockingQueue<String> aPageQueue, BlockingQueue<String> aImageLoadPageQueue,String aWebUrl){
-        pageQueue = aPageQueue;
-        imageLoadPageQueue = aImageLoadPageQueue;
+    public ImageLoadPageSearchTask(String aWebUrl, String aPageUrl, LinkedList<Runnable> aTaskQueue){
         webUrl = aWebUrl;
+        pageUrl = aPageUrl;
+        queue = aTaskQueue;
     }
 
     public void run(){
-        try{
-            boolean done = false;
-
-            while(!done){
-
-                if (pageQueue.isEmpty()){
-                    done = true;
-                }
-                else{
-                    String pageUrl = pageQueue.take();
-                    HTMLDocument htmlDoc = HtmlParser.getHtmlDoc(pageUrl);
-                    findImageLoadPagesUrl(htmlDoc);
-                }
-            }
-
-        }
-        catch(InterruptedException ex){
-        }
+//        try{
+            HTMLDocument htmlDoc = HtmlParser.getHtmlDoc(pageUrl);
+            findImageLoadPagesUrl(htmlDoc);
+//        }
+//        catch(InterruptedException ex){
+//        }
     }
 
     private void findImageLoadPagesUrl(HTMLDocument htmlDoc){
@@ -54,7 +41,12 @@ public class ImageLoadPageSearchTask implements Runnable{
                 } else{
                     url = imgLoadPageUrl;
                 }
-                imageLoadPageQueue.add(url);
+
+                synchronized(queue) {
+                    queue.addLast(new ImageLoaderTask(webUrl, url, queue));
+                    queue.notify();
+                }
+
             }
         }
     }

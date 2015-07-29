@@ -1,5 +1,4 @@
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.LinkedList;
 
 /**
  * Created by Антон on 27.07.2015.
@@ -8,20 +7,23 @@ public class ThreadPool {
 
     private final int nThreads;
     private PoolWorker[] threads;
-    public BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<>();
+    public final LinkedList<Runnable> taskQueue;
+    private String webUrl = "http://www.hdwallpapers.in";
 
     public ThreadPool(int aThreads){
         nThreads = aThreads;
         threads = new PoolWorker[nThreads];
+        taskQueue = new LinkedList<>();
 
-        for(i = 1; i < 4; i++){
+        for(int i = 1; i < 4; i++){
             // переделать task
-            taskQueue.add(new ImageLoadPageSearchTask(url, taskQueue));
+            String url = webUrl + "/latest_wallpapers/page/" + i;
+            taskQueue.addLast(new ImageLoadPageSearchTask(webUrl, url, taskQueue));
         }
 
         for(int j = 0; j < nThreads; j++){
-            threads[i] = new PoolWorker();
-            threads[i].start();
+            threads[j] = new PoolWorker();
+            threads[j].start();
         }
 
     }
@@ -31,8 +33,9 @@ public class ThreadPool {
 
         public void run() {
             Runnable r;
+            int count = 40;
 
-            while (true) {
+            while (count > 0) {
                 synchronized(taskQueue) {
                     while (taskQueue.isEmpty()) {
                         try
@@ -43,8 +46,8 @@ public class ThreadPool {
                         {
                         }
                     }
-
-                    r = (Runnable) taskQueue.removeFirst();
+                    count --;
+                    r = taskQueue.removeFirst();
                 }
 
                 // If we don't catch RuntimeException,

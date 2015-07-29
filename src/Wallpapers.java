@@ -23,22 +23,22 @@ public class Wallpapers {
     }
 
     public void makeDownloads (){
-        BlockingQueue<String> imageLoadPageQueue = new LinkedBlockingQueue<>();
-        ExecutorService es = Executors.newCachedThreadPool();
-
-        try{
-            for(int i=0;i<5;i++)
-                es.execute(new ImageLoadPageSearchTask(pagesQueue, imageLoadPageQueue, webUrl));
-            es.shutdown();
-            boolean finished = es.awaitTermination(1, TimeUnit.MINUTES);
-
-            if (finished){
-                for(int i = 0; i < threadCount; i++){
-                    new Thread(new ImageLoaderTask(imageLoadPageQueue, webUrl)).start();
-                }
-            }
-        }
-        catch(InterruptedException ex){}
+//        BlockingQueue<String> imageLoadPageQueue = new LinkedBlockingQueue<>();
+//        ExecutorService es = Executors.newCachedThreadPool();
+//
+//        try{
+//            for(int i=0;i<5;i++)
+//                es.execute(new ImageLoadPageSearchTask(pagesQueue, imageLoadPageQueue, webUrl));
+//            es.shutdown();
+//            boolean finished = es.awaitTermination(1, TimeUnit.MINUTES);
+//
+//            if (finished){
+//                for(int i = 0; i < threadCount; i++){
+//                    new Thread(new ImageLoaderTask(imageLoadPageQueue, webUrl)).start();
+//                }
+//            }
+//        }
+//        catch(InterruptedException ex){}
 
 
 //        for(int i = 0; i < threadCount; i++){

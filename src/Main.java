@@ -36,11 +36,12 @@ public class Main {
 
         final int THREAD_COUNT = 32;
 
-        Wallpapers wPapers = new Wallpapers(THREAD_COUNT);
-
-        System.out.println("start=" + LocalTime.now());
-        wPapers.makeDownloads();
-        System.out.println("end=" + LocalTime.now());
+//        Wallpapers wPapers = new Wallpapers(THREAD_COUNT);
+//
+//        System.out.println("start=" + LocalTime.now());
+//        wPapers.makeDownloads();
+//        System.out.println("end=" + LocalTime.now());
+        ThreadPool pool = new ThreadPool(THREAD_COUNT);
     }
 
 
