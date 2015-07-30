@@ -43,7 +43,7 @@ public class ImageLoadPageSearchTask implements Runnable{
                 }
 
                 synchronized(queue) {
-                    queue.addLast(new ImageLoaderTask(webUrl, url, queue));
+                    queue.addLast(new FindImageUrlTask(webUrl, url, queue));
                     queue.notify();
                 }
 

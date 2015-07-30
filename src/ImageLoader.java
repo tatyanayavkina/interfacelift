@@ -17,7 +17,6 @@ public class ImageLoader {
         BufferedImage image = null;
         String url = imgUrl;
         String imgName;
-        System.out.println(LocalTime.now() +" image from="+imgUrl);
 
         try {
             imgName = imgUrl.substring(imgUrl.lastIndexOf("/") + 1);

@@ -33,9 +33,8 @@ public class ThreadPool {
 
         public void run() {
             Runnable r;
-            int count = 40;
 
-            while (count > 0) {
+            while (true) {
                 synchronized(taskQueue) {
                     while (taskQueue.isEmpty()) {
                         try
@@ -46,7 +45,7 @@ public class ThreadPool {
                         {
                         }
                     }
-                    count --;
+
                     r = taskQueue.removeFirst();
                 }
 

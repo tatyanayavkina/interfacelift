@@ -34,11 +34,11 @@ public class Main {
 //            e.printStackTrace();
 //        }
 
-        final int THREAD_COUNT = 32;
+        final int THREAD_COUNT = 2;
 
 //        Wallpapers wPapers = new Wallpapers(THREAD_COUNT);
 //
-//        System.out.println("start=" + LocalTime.now());
+        System.out.println("start=" + LocalTime.now());
 //        wPapers.makeDownloads();
 //        System.out.println("end=" + LocalTime.now());
         ThreadPool pool = new ThreadPool(THREAD_COUNT);
