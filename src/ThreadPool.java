@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Антон on 27.07.2015.
@@ -8,6 +9,8 @@ public class ThreadPool {
     private final int nThreads;
     private PoolWorker[] threads;
     public final LinkedList<Runnable> taskQueue;
+    private volatile AtomicInteger nActiveThreads = new AtomicInteger();
+    private boolean isStopped = false;
     private String webUrl = "http://www.hdwallpapers.in";
 
     public ThreadPool(int aThreads){
@@ -28,17 +31,23 @@ public class ThreadPool {
 
     }
 
+    public void kill(){
+        isStopped = true;
+    }
+
     private class PoolWorker extends Thread{
 
 
         public void run() {
             Runnable r;
 
-            while (true) {
+            while (!isStopped) {
                 synchronized(taskQueue) {
                     while (taskQueue.isEmpty()) {
                         try
                         {
+                            int active = nActiveThreads.decrementAndGet();
+                            if(active == 0){return;}
                             taskQueue.wait();
                         }
                         catch (InterruptedException ignored)
@@ -47,6 +56,7 @@ public class ThreadPool {
                     }
 
                     r = taskQueue.removeFirst();
+                    nActiveThreads.incrementAndGet();
                 }
 
                 // If we don't catch RuntimeException,
