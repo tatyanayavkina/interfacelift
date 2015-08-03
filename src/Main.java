@@ -6,9 +6,6 @@
 import java.time.LocalTime;
 
 public class Main {
-
-
-
     public static void main(String[] args) {
 //        // Create a new trust manager that trust all certificates
 //        TrustManager[] trustAllCerts = new TrustManager[]{
@@ -35,14 +32,8 @@ public class Main {
 //        }
 
         final int THREAD_COUNT = 2;
-
-//        Wallpapers wPapers = new Wallpapers(THREAD_COUNT);
-//
-        System.out.println("start=" + LocalTime.now());
-//        wPapers.makeDownloads();
-//        System.out.println("end=" + LocalTime.now());
-        ThreadPool pool = new ThreadPool(THREAD_COUNT);
+        Wallpapers wPapers = new Wallpapers(THREAD_COUNT);
+        wPapers.prepare(3);
+        wPapers.execute();
     }
-
-
 }

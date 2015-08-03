@@ -8,9 +8,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * Created by Татьяна on 08.07.2015.
- */
 public class HtmlParser {
 
     //get content of web page with pageUrl url

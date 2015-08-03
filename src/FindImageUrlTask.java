@@ -4,35 +4,25 @@ import javax.swing.text.html.HTMLDocument;
 import java.time.LocalTime;
 import java.util.LinkedList;
 
-/**
- * Created by Татьяна on 30.07.2015.
- */
 public class FindImageUrlTask implements Runnable{
-    private final LinkedList<Runnable> queue;
+    private final ThreadPool threadPool;
     private String webUrl;
     private String pageUrl;
 
     final String imgMatch = "1920x1080.jpg";
 
-    public FindImageUrlTask(String aWebUrl, String aPageUrl, LinkedList<Runnable> aQueue){
-        queue = aQueue;
+    public FindImageUrlTask(String aWebUrl, String aPageUrl, ThreadPool threadPool){
         webUrl = aWebUrl;
         pageUrl = aPageUrl;
+        this.threadPool = threadPool;
     }
 
     public void run(){
-//        try{
         String imgUrl = findImageLoadUrl(pageUrl);
         if (imgUrl.length() > 0){
-            synchronized(queue) {
-                queue.addLast(new ImageLoaderTask(imgUrl));
-                queue.notify();
-            }
+            threadPool.addTask(new ImageLoaderTask(imgUrl));
         }
 
-//        }
-//        catch(InterruptedException ex){
-//        }
     }
 
     private String findImageLoadUrl(String imgPageUrl){

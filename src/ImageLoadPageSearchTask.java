@@ -1,21 +1,17 @@
 import javax.swing.text.AttributeSet;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
-import java.util.LinkedList;
 
-/**
- * Created by ������� on 09.07.2015.
- */
 public class ImageLoadPageSearchTask implements Runnable{
-    private final LinkedList<Runnable> queue;
+    private final ThreadPool threadPool;
     private final String webUrl;
     private final String pageUrl;
     private final String pageMatch = "-wallpapers.html";
 
-    public ImageLoadPageSearchTask(String aWebUrl, String aPageUrl, LinkedList<Runnable> aTaskQueue){
+    public ImageLoadPageSearchTask(String aWebUrl, String aPageUrl, ThreadPool threadPool){
         webUrl = aWebUrl;
         pageUrl = aPageUrl;
-        queue = aTaskQueue;
+        this.threadPool = threadPool;
     }
 
     public void run(){
@@ -42,11 +38,7 @@ public class ImageLoadPageSearchTask implements Runnable{
                     url = imgLoadPageUrl;
                 }
 
-                synchronized(queue) {
-                    queue.addLast(new FindImageUrlTask(webUrl, url, queue));
-                    queue.notify();
-                }
-
+                threadPool.addTask(new FindImageUrlTask(webUrl, url, threadPool));
             }
         }
     }

@@ -1,9 +1,5 @@
 import java.time.LocalTime;
 
-
-/**
- * Created by Tatiana on 09.07.2015.
- */
 public class ImageLoaderTask  implements Runnable{
 
     private String imageUrl;

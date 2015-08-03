@@ -4,9 +4,6 @@ import java.io.File;
 import java.net.URL;
 import java.time.LocalTime;
 
-/**
- * Created by Татьяна on 08.07.2015.
- */
 public class ImageLoader {
     private static String imgFolder = "D:/books/images/";
 
