@@ -24,6 +24,6 @@ public class Wallpapers {
     public void execute() {
         threadPool.start();
         threadPool.join();
-        threadPool.stop(); // there is possible error: a finish of the main thread may occur non planning interrupting pool threads
+        threadPool.stop(); // there is a possible error: finishing of the main thread may occur non planning interrupting pool threads
     }
 }

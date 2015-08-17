@@ -28,22 +28,22 @@ public class FindImageUrlTask implements Runnable{
     private String findImageLoadUrl(String imgPageUrl){
         String url;
         String emptyUrl = "";
-        HTMLDocument htmlDoc = HtmlParser.getHtmlDoc(imgPageUrl);
-        for (HTMLDocument.Iterator iterator = htmlDoc.getIterator(HTML.Tag.A); iterator.isValid(); iterator.next()) {
-
-            AttributeSet attributes = iterator.getAttributes();
-            String imgUrl = (String) attributes.getAttribute(HTML.Attribute.HREF);
-
-            if (imgUrl != null && imgUrl.endsWith(imgMatch)) {
-                if(!imgUrl.startsWith("http")){
-                    url = webUrl + imgUrl;
-                } else{
-                    url = imgUrl;
-                }
-
-                return url;
-            }
-        }
+//        HTMLDocument htmlDoc = HtmlParser.getHtmlDoc(imgPageUrl);
+//        for (HTMLDocument.Iterator iterator = htmlDoc.getIterator(HTML.Tag.A); iterator.isValid(); iterator.next()) {
+//
+//            AttributeSet attributes = iterator.getAttributes();
+//            String imgUrl = (String) attributes.getAttribute(HTML.Attribute.HREF);
+//
+//            if (imgUrl != null && imgUrl.endsWith(imgMatch)) {
+//                if(!imgUrl.startsWith("http")){
+//                    url = webUrl + imgUrl;
+//                } else{
+//                    url = imgUrl;
+//                }
+//
+//                return url;
+//            }
+//        }
 
         return emptyUrl;
     }

@@ -1,6 +1,8 @@
-import javax.swing.text.AttributeSet;
-import javax.swing.text.html.HTML;
-import javax.swing.text.html.HTMLDocument;
+//import javax.swing.text.AttributeSet;
+//import javax.swing.text.html.HTML;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+//import javax.swing.text.html.HTMLDocument;
 
 public class ImageLoadPageSearchTask implements Runnable{
     private final ThreadPool threadPool;
@@ -15,27 +17,26 @@ public class ImageLoadPageSearchTask implements Runnable{
     }
 
     public void run(){
-//        try{
-            HTMLDocument htmlDoc = HtmlParser.getHtmlDoc(pageUrl);
-            findImageLoadPagesUrl(htmlDoc);
-//        }
-//        catch(InterruptedException ex){
-//        }
+            String htmlString = HtmlParser.getHtmlContentStringByUrl(pageUrl);
+            findImageLoadPagesUrl(htmlString);
     }
 
-    private void findImageLoadPagesUrl(HTMLDocument htmlDoc){
-        for (HTMLDocument.Iterator iterator = htmlDoc.getIterator(HTML.Tag.A); iterator.isValid(); iterator.next()) {
+    private void findImageLoadPagesUrl(String htmlString){
+        Pattern urlPattern = Pattern.compile(Constant.HTML_A_HREF_TAG_PATTERN);
+        Matcher matcherHref = urlPattern.matcher(htmlString);
 
-            AttributeSet attributes = iterator.getAttributes();
-            String imgLoadPageUrl = (String) attributes.getAttribute(HTML.Attribute.HREF);
+        while(matcherHref.find()){
 
-            if (imgLoadPageUrl != null && imgLoadPageUrl.endsWith(pageMatch)) {
+            String href = matcherHref.group(1);
+
+            if (href.endsWith(pageMatch)){
                 String url;
 
-                if(!imgLoadPageUrl.startsWith("http")){
-                    url = webUrl + imgLoadPageUrl;
-                } else{
-                    url = imgLoadPageUrl;
+                if(!href.startsWith("http")){
+                    url = webUrl + href;
+                }
+                else{
+                    url = href;
                 }
 
                 threadPool.addTask(new FindImageUrlTask(webUrl, url, threadPool));

@@ -8,13 +8,9 @@ public class ImageLoaderTask  implements Runnable{
         imageUrl = aImageUrl;
     }
 
-    public void run(){
-//        try{
-            ImageLoader.downloadImage(imageUrl);
-            System.out.println("end=" + LocalTime.now());
-//        }
-//        catch(InterruptedException ex){
-//        }
-    }
+    public void run() {
 
+        ImageLoader.downloadImage(imageUrl);
+        System.out.println("end=" + LocalTime.now());
+    }
 }
