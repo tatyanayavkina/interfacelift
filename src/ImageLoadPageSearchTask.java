@@ -1,8 +1,5 @@
-//import javax.swing.text.AttributeSet;
-//import javax.swing.text.html.HTML;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
-//import javax.swing.text.html.HTMLDocument;
 
 public class ImageLoadPageSearchTask implements Runnable{
     private final ThreadPool threadPool;

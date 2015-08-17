@@ -30,7 +30,7 @@ public class FindImageUrlTask implements Runnable{
             if (href.endsWith(imgMatch)){
                 String url;
 
-                if(!href.startsWith("http")){
+                if(!href.startsWith("https")){
                     url = webUrl + href;
                 }
                 else{

@@ -5,7 +5,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class Wallpapers {
-    final String rootUrl = "http://www.hdwallpapers.in";
+//    final String rootUrl = "http://www.hdwallpapers.in";
+    final String rootUrl = "https://interfacelift.com";
     private final ThreadPool threadPool;
 
     public Wallpapers(int threadCount) {
@@ -16,8 +17,10 @@ public class Wallpapers {
         String pageUrl;
 
         for(int i = 1; i <= crawlingPageCount; ++i) {
-            pageUrl =  rootUrl + "/latest_wallpapers/page/" + i;
-            threadPool.addTask(new ImageLoadPageSearchTask(rootUrl, pageUrl, threadPool));
+//            pageUrl =  rootUrl + "/latest_wallpapers/page/" + i;
+            pageUrl =  rootUrl + "/wallpaper/downloads/date/wide_16:9/1920x1080/index" + i + ".html";
+//            threadPool.addTask(new ImageLoadPageSearchTask(rootUrl, pageUrl, threadPool));
+            threadPool.addTask(new FindImageUrlTask(rootUrl, pageUrl, threadPool));
         }
     }
 
