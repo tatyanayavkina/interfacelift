@@ -11,6 +11,7 @@ public class ImageLoaderTask  implements Runnable{
     public void run() {
 
         ImageLoader.downloadImage(imageUrl);
+        System.out.println("url=" + imageUrl);
         System.out.println("end=" + LocalTime.now());
     }
 }

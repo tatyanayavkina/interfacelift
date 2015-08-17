@@ -13,7 +13,8 @@ public class HtmlParser {
     //get content of web page with pageUrl url
     public static String getHtmlContentStringByUrl(String pageUrl){
 
-        String html = Constant.EMPTY_STRING;
+        String htmlString = Constant.EMPTY_STRING;
+
         try{
             //create url and open connection
             URL url = new URL(pageUrl);
@@ -31,15 +32,12 @@ public class HtmlParser {
                 htmlBuilder.append(thisLine);
             }
 
-            html = htmlBuilder.toString();
-            System.out.println(html);
-            //parse web page content
-//            parser.parse(br, callback, true);
+            htmlString = htmlBuilder.toString();
         }
         catch(IOException e){
             e.printStackTrace();
         }
 
-        return html;
+        return htmlString;
     }
 }

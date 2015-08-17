@@ -31,7 +31,7 @@ public class Main {
 //            e.printStackTrace();
 //        }
 
-        final int THREAD_COUNT = 2;
+        final int THREAD_COUNT = 6;
         Wallpapers wPapers = new Wallpapers(THREAD_COUNT);
         wPapers.prepare(3);
         wPapers.execute();

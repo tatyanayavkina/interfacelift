@@ -4,5 +4,5 @@
 public class Constant {
    public static final String EMPTY_STRING = "";
 
-    public static final String HTML_A_HREF_TAG_PATTERN = "<a\\s+(?:[^>]*?\\s+)?href=\"([^\"]*)\"";
+   public static final String HTML_A_HREF_TAG_PATTERN = "<a\\s+(?:[^>]*?\\s+)?href=\"([^\"]*)\"";
 }

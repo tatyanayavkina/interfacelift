@@ -10,9 +10,9 @@ public class ImageLoadPageSearchTask implements Runnable{
     private final String pageUrl;
     private final String pageMatch = "-wallpapers.html";
 
-    public ImageLoadPageSearchTask(String aWebUrl, String aPageUrl, ThreadPool threadPool){
-        webUrl = aWebUrl;
-        pageUrl = aPageUrl;
+    public ImageLoadPageSearchTask(String webUrl, String pageUrl, ThreadPool threadPool){
+        this.webUrl = webUrl;
+        this.pageUrl = pageUrl;
         this.threadPool = threadPool;
     }
 
@@ -22,12 +22,12 @@ public class ImageLoadPageSearchTask implements Runnable{
     }
 
     private void findImageLoadPagesUrl(String htmlString){
-        Pattern urlPattern = Pattern.compile(Constant.HTML_A_HREF_TAG_PATTERN);
-        Matcher matcherHref = urlPattern.matcher(htmlString);
+        Pattern aHrefTagPattern = Pattern.compile(Constant.HTML_A_HREF_TAG_PATTERN);
+        Matcher hrefMatcher = aHrefTagPattern.matcher(htmlString);
 
-        while(matcherHref.find()){
+        while(hrefMatcher.find()){
 
-            String href = matcherHref.group(1);
+            String href = hrefMatcher.group(1);
 
             if (href.endsWith(pageMatch)){
                 String url;

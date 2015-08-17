@@ -1,8 +1,5 @@
-import javax.swing.text.AttributeSet;
-import javax.swing.text.html.HTML;
-import javax.swing.text.html.HTMLDocument;
-import java.time.LocalTime;
-import java.util.LinkedList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FindImageUrlTask implements Runnable{
     private final ThreadPool threadPool;
@@ -11,41 +8,38 @@ public class FindImageUrlTask implements Runnable{
 
     final String imgMatch = "1920x1080.jpg";
 
-    public FindImageUrlTask(String aWebUrl, String aPageUrl, ThreadPool threadPool){
-        webUrl = aWebUrl;
-        pageUrl = aPageUrl;
+    public FindImageUrlTask(String webUrl, String pageUrl, ThreadPool threadPool){
+        this.webUrl = webUrl;
+        this.pageUrl = pageUrl;
         this.threadPool = threadPool;
     }
 
     public void run(){
-        String imgUrl = findImageLoadUrl(pageUrl);
-        if (imgUrl.length() > 0){
-            threadPool.addTask(new ImageLoaderTask(imgUrl));
-        }
-
+        String htmlString = HtmlParser.getHtmlContentStringByUrl(pageUrl);
+        findImageLoadUrl(htmlString);
     }
 
-    private String findImageLoadUrl(String imgPageUrl){
-        String url;
-        String emptyUrl = "";
-//        HTMLDocument htmlDoc = HtmlParser.getHtmlDoc(imgPageUrl);
-//        for (HTMLDocument.Iterator iterator = htmlDoc.getIterator(HTML.Tag.A); iterator.isValid(); iterator.next()) {
-//
-//            AttributeSet attributes = iterator.getAttributes();
-//            String imgUrl = (String) attributes.getAttribute(HTML.Attribute.HREF);
-//
-//            if (imgUrl != null && imgUrl.endsWith(imgMatch)) {
-//                if(!imgUrl.startsWith("http")){
-//                    url = webUrl + imgUrl;
-//                } else{
-//                    url = imgUrl;
-//                }
-//
-//                return url;
-//            }
-//        }
+    private void findImageLoadUrl(String htmlString){
+        Pattern aHrefTagPattern = Pattern.compile(Constant.HTML_A_HREF_TAG_PATTERN);
+        Matcher hrefMatcher = aHrefTagPattern.matcher(htmlString);
 
-        return emptyUrl;
+        while(hrefMatcher.find()){
+
+            String href = hrefMatcher.group(1);
+
+            if (href.endsWith(imgMatch)){
+                String url;
+
+                if(!href.startsWith("http")){
+                    url = webUrl + href;
+                }
+                else{
+                    url = href;
+                }
+
+                threadPool.addTask(new ImageLoaderTask(url));
+            }
+        }
     }
 }
 
