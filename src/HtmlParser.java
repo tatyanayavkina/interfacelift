@@ -35,6 +35,8 @@ public class HtmlParser {
                 htmlBuilder.append(thisLine);
             }
 
+            br.close();
+
             htmlString = htmlBuilder.toString();
         }
         catch(IOException e){

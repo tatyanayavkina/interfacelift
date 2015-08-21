@@ -1,12 +1,12 @@
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+//import java.util.concurrent.BlockingQueue;
+//import java.util.concurrent.LinkedBlockingQueue;
+//import java.util.concurrent.ExecutorService;
+//import java.util.concurrent.Executors;
+//import java.util.concurrent.TimeUnit;
 
 public class Wallpapers {
 //    final String rootUrl = "http://www.hdwallpapers.in";
-    final String rootUrl = "https://interfacelift.com";
+    final String rootUrl = "http://interfacelift.com";
     private final ThreadPool threadPool;
 
     public Wallpapers(int threadCount) {

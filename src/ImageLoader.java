@@ -10,7 +10,7 @@ import java.io.BufferedInputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.time.LocalTime;
+//import java.time.LocalTime;
 import javax.net.ssl.HttpsURLConnection;
 
 public class ImageLoader {
@@ -30,7 +30,14 @@ public class ImageLoader {
 
             URL url = new URL(null, urlStr ,new sun.net.www.protocol.https.Handler());
             HttpsURLConnection httpConn = (HttpsURLConnection) url.openConnection();
-            httpConn.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:30.0) Gecko/20100101 Firefox/30.0");
+            try {
+                httpConn.setConnectTimeout(10000);
+                httpConn.setReadTimeout(10000);
+            } catch (Exception e) {
+                System.out.println("downloading failed");
+                return;
+            }
+            httpConn.setRequestProperty("User-Agent", "Mozilla 5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.11) ");
             InputStream inStream = httpConn.getInputStream();
             byte[] btImg = readInputStream(inStream);
 
