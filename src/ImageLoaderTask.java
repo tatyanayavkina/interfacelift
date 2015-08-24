@@ -1,4 +1,3 @@
-import java.time.LocalTime;
 
 public class ImageLoaderTask  implements Runnable{
 
@@ -9,8 +8,6 @@ public class ImageLoaderTask  implements Runnable{
     }
 
     public void run() {
-
         ImageLoader.downloadImage(imageUrl);
-        System.out.println("end=" + LocalTime.now());
     }
 }

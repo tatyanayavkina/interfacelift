@@ -1,8 +1,3 @@
-//import java.util.concurrent.BlockingQueue;
-//import java.util.concurrent.LinkedBlockingQueue;
-//import java.util.concurrent.ExecutorService;
-//import java.util.concurrent.Executors;
-//import java.util.concurrent.TimeUnit;
 
 public class Wallpapers {
 //    final String rootUrl = "http://www.hdwallpapers.in";
@@ -19,8 +14,8 @@ public class Wallpapers {
         for(int i = 1; i <= crawlingPageCount; ++i) {
 //            pageUrl =  rootUrl + "/latest_wallpapers/page/" + i;
             pageUrl =  rootUrl + "/wallpaper/downloads/date/wide_16:9/1920x1080/index" + i + ".html";
-//            threadPool.addTask(new ImageLoadPageSearchTask(rootUrl, pageUrl, threadPool));
-            threadPool.addTask(new FindImageUrlTask(rootUrl, pageUrl, threadPool));
+//            threadPool.addTask(new ImageLoadPageSearchTask(rootUrl, pageUrl, threadPool, Constant.HTTP_PROTOCOL));
+            threadPool.addTask(new FindImageUrlTask(rootUrl, pageUrl, threadPool, Constant.HTTP_PROTOCOL));
         }
     }
 
