@@ -13,17 +13,17 @@ public class Constant {
       HD_WALLPAPERS(1, "http://www.hdwallpapers.in", HTTP_PROTOCOL),
       INTERFACELIFT(2, "http://interfacelift.com", HTTP_PROTOCOL);
 
-      private int code;
+      private String code;
       private String host;
       private String protocol;
 
-      webSite(String host, String protocol, int code){
+      webSite(int code, String host, String protocol){
+         this.code = Integer.toString(code);
          this.host = host;
          this.protocol = protocol;
-         this.code = code;
       }
 
-      public  int getCode(){
+      public  String getCode(){
          return code;
       }
 

@@ -6,7 +6,7 @@ public class InterfaceliftWallpapers extends AbstractWallpapers {
     private ThreadPool threadPool;
 
     public InterfaceliftWallpapers(int threadCount){
-        super(threadCount);
+        this.threadPool = new ThreadPool(threadCount);
     }
 
     public void prepare(int crawlingPageCount){

@@ -3,11 +3,7 @@
  */
 public abstract class AbstractWallpapers {
     private String rootUrl;
-    private final ThreadPool threadPool;
-
-    public AbstractWallpapers(int threadCount) {
-        this.threadPool = new ThreadPool(threadCount);
-    }
+    protected ThreadPool threadPool;
 
     public abstract void prepare(int crawlingPageCount);
 

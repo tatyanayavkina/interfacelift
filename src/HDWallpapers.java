@@ -5,7 +5,7 @@ public class HDWallpapers extends AbstractWallpapers {
     private ThreadPool threadPool;
 
     public HDWallpapers(int threadCount){
-        super(threadCount);
+        this.threadPool = new ThreadPool(threadCount);
     }
 
     public void prepare(int crawlingPageCount) {
