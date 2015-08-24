@@ -4,7 +4,7 @@
 public class WallpapersFactoryMethod {
 
     public AbstractWallpapers createWallpapers (Constant.webSite webSite, int threadCount){
-        AbstractWallpapers wallpapers = new HDWallpapers(threadCount);
+        AbstractWallpapers wallpapers;
 
         switch(webSite){
             case HD_WALLPAPERS:
@@ -12,6 +12,9 @@ public class WallpapersFactoryMethod {
                 break;
             case INTERFACELIFT:
                 wallpapers = new InterfaceliftWallpapers(threadCount);
+                break;
+            default:
+                wallpapers = new HDWallpapers(threadCount);
                 break;
         }
 

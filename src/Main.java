@@ -1,8 +1,10 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
-        int userChoice;
+        int userChoice = 1;
         Scanner scanner = new Scanner(System.in);
         /* User should make a choice */
         System.out.println("Choose web site to image loading");
@@ -10,12 +12,18 @@ public class Main {
         System.out.println("2. " + Constant.webSite.INTERFACELIFT.getHost());
 
         /* Read user choice */
-        userChoice = scanner.nextInt();
+        try{
+            userChoice = scanner.nextInt();
+        }catch(InputMismatchException e){
+            System.out.println("Sorry, your input is incorrect. You must enter 1 or 2. Try again later.");
+            System.exit(-1);
+        }
 
         final int THREAD_COUNT = 6;
-        HDWallpapers wPapers = new HDWallpapers(THREAD_COUNT);
+
+        WallpapersFactoryMethod wFactory = new WallpapersFactoryMethod();
+        AbstractWallpapers wPapers = wFactory.createWallpapers(Constant.webSite.getByCode(userChoice), THREAD_COUNT);
         wPapers.prepare(3);
         wPapers.execute();
-
     }
 }
