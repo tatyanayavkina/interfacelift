@@ -2,11 +2,9 @@
  * Created by Татьяна on 24.08.2015.
  */
 public class InterfaceliftWallpapers extends AbstractWallpapers {
-    private final String rootUrl = Constant.webSite.INTERFACELIFT.getHost();
-    private ThreadPool threadPool;
 
     public InterfaceliftWallpapers(int threadCount){
-        this.threadPool = new ThreadPool(threadCount);
+        super(Constant.webSite.INTERFACELIFT.getHost(), threadCount);
     }
 
     public void prepare(int crawlingPageCount){

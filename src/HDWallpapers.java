@@ -1,11 +1,8 @@
 
 public class HDWallpapers extends AbstractWallpapers {
 
-    private final String rootUrl = Constant.webSite.HD_WALLPAPERS.getHost();
-    private ThreadPool threadPool;
-
     public HDWallpapers(int threadCount){
-        this.threadPool = new ThreadPool(threadCount);
+        super(Constant.webSite.HD_WALLPAPERS.getHost(), threadCount);
     }
 
     public void prepare(int crawlingPageCount) {

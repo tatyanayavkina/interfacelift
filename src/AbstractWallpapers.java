@@ -2,8 +2,13 @@
  * Created by Татьяна on 24.08.2015.
  */
 public abstract class AbstractWallpapers {
-    private String rootUrl;
+    protected String rootUrl;
     protected ThreadPool threadPool;
+
+    public AbstractWallpapers(String rootUrl, int threadCount){
+        this.rootUrl = rootUrl;
+        this.threadPool = new ThreadPool(threadCount);
+    }
 
     public abstract void prepare(int crawlingPageCount);
 
