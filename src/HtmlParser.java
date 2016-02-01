@@ -1,6 +1,4 @@
-//import javax.swing.text.html.HTMLDocument;
-//import javax.swing.text.html.HTMLEditorKit;
-//import javax.swing.text.html.parser.ParserDelegator;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
