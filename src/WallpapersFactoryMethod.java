@@ -1,6 +1,4 @@
-/**
- * Created by Татьяна on 24.08.2015.
- */
+
 public class WallpapersFactoryMethod {
 
     public AbstractWallpapers createWallpapers (Constant.webSite webSite, int threadCount){
