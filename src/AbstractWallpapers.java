@@ -1,6 +1,4 @@
-/**
- * Created by Татьяна on 24.08.2015.
- */
+
 public abstract class AbstractWallpapers {
     protected String rootUrl;
     protected ThreadPool threadPool;
